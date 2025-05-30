@@ -1,0 +1,107 @@
+// npx prisma migrate reset
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+model User {
+  id           String           @id @default(cuid())
+  cognitoSub   String           @unique
+  email        String?          
+  name         String?
+  avatarUrl    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+  preferences  UserPreference?
+  meals        MealRecord[]
+}
+
+model UserPreference {
+  userId          String     @id
+  user            User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  calorieGoal     Int?
+  isVegetarian    Boolean    @default(false)
+  language        String     @default("zh-TW")
+  measurementUnit String     @default("metric")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+}
+
+model MealRecord {
+  id          String       @id @default(cuid())
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  mealType    String       // e.g., breakfast, lunch, snack
+  photoUrl    String?
+  notes       String?
+  recordedAt DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+  items       MealItem[]
+}
+
+model MealItem {
+  id          String     @id @default(cuid())
+  meal        MealRecord @relation(fields: [mealId], references: [id], onDelete: Cascade)
+  mealId      String
+  name        String
+  calories    Int?
+  protein     Float?
+  fat         Float?
+  carbs       Float?
+  quantity    String?
+  aiDetected  Boolean     @default(false)
+  tags        MealTag[]
+  nutrients   MealItemNutrient[]  // 🔥 關聯多個營養素
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+deletedAt DateTime?
+}
+
+model Nutrient {
+  id     Int     @id @default(autoincrement())
+  code   String  @unique // e.g., "calcium", "iron", "vitamin_c"
+  name   String          // 顯示用名稱，如 "鈣" 或 "Vitamin C"
+  unit   String
+  items  MealItemNutrient[]
+}
+
+model MealItemNutrient {
+  id           Int       @id @default(autoincrement())
+  mealItem     MealItem  @relation(fields: [mealItemId], references: [id], onDelete: Cascade)
+  mealItemId   String
+  nutrient     Nutrient  @relation(fields: [nutrientId], references: [id], onDelete: Cascade)
+  nutrientId   Int
+  value        Float      // 實際數值
+
+  @@unique([mealItemId, nutrientId]) // 一筆食物不能重複同一種營養素
+}
+
+model Tag {
+  id    Int        @id @default(autoincrement())
+  name  String     @unique
+  meals MealTag[]
+}
+
+model MealTag {
+  mealItem   MealItem @relation(fields: [mealItemId], references: [id], onDelete: Cascade)
+  mealItemId String
+  tag        Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  tagId      Int
+
+  @@id([mealItemId, tagId])
+}
