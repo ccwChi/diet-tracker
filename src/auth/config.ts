@@ -8,6 +8,14 @@ export const providerConfig = {
       clientId:     process.env.COGNITO_CLIENT_ID!,
       clientSecret: process.env.COGNITO_CLIENT_SECRET!,
       issuer:       process.env.COGNITO_ISSUER!,
+      profile(profile) {
+        return {
+          id:    profile.sub,
+          name:  profile.name,
+          email: profile.email,
+          image: profile.picture,   // 根據 Cognito 回傳的 JSON 結構調整
+        };
+      },
     }),
   ],
 } satisfies Pick<NextAuthOptions, "providers">

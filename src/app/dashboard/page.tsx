@@ -81,13 +81,17 @@ export default function DashboardPage() {
           {recentMeals.map((meal) => (
             <Card key={meal.id}>
               <CardContent className="p-4">
-                <img
+                {/* <img
                   src={meal.image}
                   alt={meal.name}
                   className="w-full h-32 object-cover rounded mb-2"
-                />
-                <h3 className="text-md font-bold">{meal.time}：{meal.name}</h3>
-                <p className="text-sm text-gray-500">熱量：{meal.calories} 大卡</p>
+                /> */}
+                <h3 className="text-md font-bold">
+                  {meal.time}：{meal.name}
+                </h3>
+                <p className="text-sm text-gray-500">
+                  熱量：{meal.calories} 大卡
+                </p>
               </CardContent>
             </Card>
           ))}
@@ -96,7 +100,9 @@ export default function DashboardPage() {
 
       <div className="fixed bottom-6 right-6">
         <Link href="/record/new">
-          <Button className="rounded-full w-14 h-14 text-2xl shadow-lg">＋</Button>
+          <Button className="rounded-full w-14 h-14 text-2xl shadow-lg">
+            ＋
+          </Button>
         </Link>
       </div>
     </main>

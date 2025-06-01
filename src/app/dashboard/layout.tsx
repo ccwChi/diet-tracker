@@ -3,7 +3,7 @@
 import { Spinner } from "@/components/spinnner";
 import { useCurrentUser } from "@/hooks/auth/use-current-user";
 import React, { useEffect, useState, useTransition } from "react";
-import Navigation from "@/components/ui/sidebar/leftbar";
+import Navigation from "@/components/ui/sidebar-abandon/leftbar";
 import { useMediaQuery } from "usehooks-ts";
 import { cn } from "@/lib/utils";
 import Sidebar from "@/components/ui/sidebar";

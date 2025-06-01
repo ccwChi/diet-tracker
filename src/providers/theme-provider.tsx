@@ -1,3 +1,4 @@
+//src/providers/theme-provider.tsx
 "use client";
 
 import { type ThemeProviderProps } from "next-themes";

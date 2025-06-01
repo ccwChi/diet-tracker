@@ -23,16 +23,6 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "飲食app",
   description: "紀錄小知識",
-  // icons: {
-  //   icon: [
-  //     {
-  //       //media:"(prefers-color-scheme:light)",
-  //       url: "/logo.svg",
-  //       href: "/logo.svg",
-  //     },
-  //   ],
-  //   shortcut: "/logo.svg",
-  // },
 };
 
 export default async function RootLayout({
@@ -41,7 +31,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
-  // console.log("session", session);
   return (
     <SessionWrapper session={session}>
       <QueryProvider>

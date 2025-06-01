@@ -15,6 +15,17 @@ enum UserRole {
   USER
 }
 
+enum UnitSystem {
+  metric
+  imperial
+}
+
+enum Language {
+  zh_TW
+  en
+  ja
+}
+
 model User {
   id           String           @id @default(cuid())
   cognitoSub   String           @unique
@@ -32,6 +43,7 @@ model UserPreference {
   userId          String     @id
   user            User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   calorieGoal     Int?
+  theme           String     @default("system") 
   isVegetarian    Boolean    @default(false)
   language        String     @default("zh-TW")
   measurementUnit String     @default("metric")

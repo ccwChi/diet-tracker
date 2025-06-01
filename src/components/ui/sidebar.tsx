@@ -1,4 +1,8 @@
+"use client";
+
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 import {
   LayoutDashboard,
   PencilLine,
@@ -17,6 +21,18 @@ import Image from "next/image";
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
   const [isDark, setIsDark] = useState(false);
+
+  const handleLogout = async () => {
+    // 1. 清掉 NextAuth 的 session cookie
+    await signOut({ redirect: false });
+    // 2. 導到 Cognito logout endpoint（請先在 .env 加入 NEXT_PUBLIC_ 前綴的環境變數）
+    const issuer   = process.env.NEXT_PUBLIC_COGNITO_ISSUER!;
+    const clientId = process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID!;
+    const logoutUri = encodeURIComponent(
+      (process.env.NEXT_PUBLIC_NEXTAUTH_URL ?? window.location.origin) + "/login"
+    );
+    window.location.href = `${issuer}/logout?client_id=${clientId}&logout_uri=${logoutUri}`;
+  };
 
   return (
     <div className={`${isDark ? "dark" : ""}`}>
@@ -96,13 +112,13 @@ export default function Sidebar() {
         </div>
 
         <div className="absolute bottom-0 left-0 w-full px-2 pb-4">
-          <a
-            href="#"
-            className="flex items-center px-3 py-2 text-gray-700 dark:text-gray-200 rounded hover:bg-red-500 hover:text-white"
+        <button
+            onClick={handleLogout}
+            className="w-full flex items-center px-3 py-2 text-gray-700 dark:text-gray-200 rounded hover:bg-red-500 hover:text-white transition"
           >
             <LogOut className="w-5 h-5" />
             {isOpen && <span className="ml-3 text-sm font-medium">登出</span>}
-          </a>
+          </button>
 
           <div className="mt-3 flex items-center justify-between px-3 py-2 rounded bg-gray-100 dark:bg-neutral-700">
             <div className="flex items-center space-x-2">
