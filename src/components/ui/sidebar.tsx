@@ -120,7 +120,7 @@ export default function Sidebar() {
             {isOpen && <span className="ml-3 text-sm font-medium">登出</span>}
           </button>
 
-          <div className="mt-3 flex items-center justify-between px-3 py-2 rounded bg-gray-100 dark:bg-neutral-700">
+          {/* <div className="mt-3 flex items-center justify-between px-3 py-2 rounded bg-gray-100 dark:bg-neutral-700">
             <div className="flex items-center space-x-2">
               {isDark ? (
                 <Sun className="w-5 h-5" />
@@ -147,7 +147,7 @@ export default function Sidebar() {
                 className="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 dark:bg-gray-600 cursor-pointer"
               ></label>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
